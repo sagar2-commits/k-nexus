@@ -5,7 +5,4 @@
     from = "/*"
       to = "/index.html"
         status = 200
-
-        [forms]
-          upload_path = "uploads"
-          
+        
