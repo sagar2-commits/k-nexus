@@ -1,8 +1,15 @@
 [build]
   publish = "/"
 
+  # Map the custom phrase to the actual file
   [[redirects]]
-    from = "/*"
-      to = "/index.html"
+    from = "/tum-to-accha-admi-hee"
+      to = "/thank-you.html"
         status = 200
-        
+
+        # Keep your safety net at the bottom
+        [[redirects]]
+          from = "/*"
+            to = "/index.html"
+              status = 200
+                force = false
