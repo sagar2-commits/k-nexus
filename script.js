@@ -1,7 +1,24 @@
 const subjects = [
         { name: 'Physics', dept: 'Science', papers: 45, year: 2024, semester: 2 },
             { name: 'Political Science', dept: 'Arts', papers: 32, year: 2023, semester: 4 },
-                { name: 'Accountancy', dept: 'Commerce', papers: 28, year: 2024, semester: 1 },
+                { name: 'Accountancy', dept: 'Commerce', papers: 28, year: 2024, semester: 1 }, { 
+                                name: 'Physics', 
+                                        dept: 'Science', 
+                                                papers: 45, 
+                                                        year: 2024, 
+                                                                semester: 2,
+                                                                        link: '/papers/physics-2024-sem2.pdf' // Add the link here
+                                                                            },     { 
+                                                                                        name: 'Political Science', 
+                                                                                                dept: 'Arts', 
+                                                                                                        papers: 1, 
+                                                                                                                year: 2024, 
+                                                                                                                        semester: 1, 
+                                                                                                                                link: 'papers/political-science-mj-2024.pdf' 
+                                                                                                                                    },
+                                                                            
+                                                                        // ... other subjects
+                
                     // Add more here as you get uploads...
                     ];
 
@@ -45,7 +62,11 @@ const subjects = [
                                                                                                                             card.innerHTML = `
                                                                                                                                     <span class="text-xs font-bold text-emerald-500 uppercase">${s.dept}</span>
                                                                                                                                             <h4 class="text-xl font-bold mt-1">${s.name}</h4>
-                                                                                                                                                    <div class="flex gap-2 mt-2">
+                                                                                                                                            <a href="${s.link}" target="_blank" class="mt-4 block text-center w-full py-2 bg-indigo-50 text-indigo-600 font-semibold rounded-lg hover:bg-indigo-100 transition">
+                                                                                                                                                View Paper →
+                                                                                                                                                </a>
+
+                                                                                                                                                            <div class="flex gap-2 mt-2">
                                                                                                                                                                 <span class="text-xs bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded text-slate-500">Sem ${s.semester}</span>
                                                                                                                                                                             <span class="text-xs bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded text-slate-500">${s.year}</span>
                                                                                                                                                                                     </div>
