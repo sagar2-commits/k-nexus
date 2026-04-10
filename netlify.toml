@@ -1,15 +1,16 @@
 [build]
   publish = "/"
 
-  # Map the custom phrase to the actual file
+  # This handles your custom "Thank You" message after upload
   [[redirects]]
     from = "/tum-to-accha-admi-hee"
-      to = "/thank-you.html"
+      to = "/index.html"
         status = 200
 
-        # Keep your safety net at the bottom
+        # This is the safety net for Single Page Applications
         [[redirects]]
           from = "/*"
             to = "/index.html"
               status = 200
                 force = false
+                
