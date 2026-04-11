@@ -1,16 +1,364 @@
+# K-Nexus v2.0 - Netlify FREE Tier Configuration
+# Optimized for Netlify Free Plan - No paid features required
+# Just copy this file as "netlify.toml" in your project root
+
 [build]
   publish = "/"
+  # Free tier has 300 build minutes per month (enough)
+  # If you have build command, add it here:
+  # command = "npm run build"
 
-  # This handles your custom "Thank You" message after upload
-  [[redirects]]
-    from = "/tum-to-accha-admi-hee"
-      to = "/index.html"
-        status = 200
+# ============================================================================
+# DEVELOPMENT CONTEXT
+# ============================================================================
 
-        # This is the safety net for Single Page Applications
-        [[redirects]]
-          from = "/*"
-            to = "/index.html"
-              status = 200
-                force = false
-                
+[context.develop]
+  # Local development
+  command = "npm run dev"
+
+# ============================================================================
+# REDIRECTS & URL HANDLING (Free tier: unlimited)
+# ============================================================================
+
+# Form submission success redirect (your existing rule)
+[[redirects]]
+  from = "/tum-to-accha-admi-hee"
+  to = "/thank-you.html"
+  status = 200
+  force = true
+
+# Alternative form success paths (for future A/B testing)
+[[redirects]]
+  from = "/form-success"
+  to = "/thank-you.html"
+  status = 200
+
+[[redirects]]
+  from = "/submission-complete"
+  to = "/thank-you.html"
+  status = 200
+
+# User dashboard redirect
+[[redirects]]
+  from = "/dashboard"
+  to = "/index.html"
+  status = 200
+
+# Papers/search routes
+[[redirects]]
+  from = "/papers/*"
+  to = "/index.html"
+  status = 200
+
+# Analytics redirect (placeholder for future)
+[[redirects]]
+  from = "/analytics"
+  to = "/index.html"
+  status = 200
+
+# Sitemap and robots (for SEO)
+[[redirects]]
+  from = "/sitemap.xml"
+  to = "/sitemap.xml"
+  status = 200
+
+[[redirects]]
+  from = "/robots.txt"
+  to = "/robots.txt"
+  status = 200
+
+# Service worker (must be served correctly)
+[[redirects]]
+  from = "/sw.js"
+  to = "/sw.js"
+  status = 200
+
+# Manifest for PWA
+[[redirects]]
+  from = "/manifest.json"
+  to = "/manifest.json"
+  status = 200
+
+# IMPORTANT: Fallback route - MUST BE LAST!
+# This enables client-side routing for single-page apps
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = false
+
+# ============================================================================
+# HTTP HEADERS - SECURITY & PERFORMANCE (Free tier: full support)
+# ============================================================================
+
+# SECURITY HEADERS FOR ALL FILES
+[[headers]]
+  for = "/*"
+  
+  [headers.values]
+    # Prevent MIME-type sniffing (important!)
+    X-Content-Type-Options = "nosniff"
+    
+    # Prevent clickjacking
+    X-Frame-Options = "SAMEORIGIN"
+    
+    # Enable browser XSS protection
+    X-XSS-Protection = "1; mode=block"
+    
+    # Control referrer information (privacy)
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    
+    # Deny access to sensitive APIs
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+    
+    # Compression
+    Vary = "Accept-Encoding"
+
+# HTML FILES - NEVER CACHE (always fresh)
+[[headers]]
+  for = "/*.html"
+  
+  [headers.values]
+    # Don't cache HTML - users always get latest
+    Cache-Control = "public, max-age=0, must-revalidate"
+    Content-Type = "text/html; charset=utf-8"
+
+# JAVASCRIPT FILES - CACHE LONG TERM
+# (Works best with versioning: app.v1.js, app.v2.js, etc.)
+[[headers]]
+  for = "/*.js"
+  
+  [headers.values]
+    # Cache for 1 year - assumes you version your files
+    Cache-Control = "public, max-age=31536000"
+    Content-Type = "application/javascript"
+
+# CSS FILES - CACHE LONG TERM
+[[headers]]
+  for = "/*.css"
+  
+  [headers.values]
+    # Cache for 1 year
+    Cache-Control = "public, max-age=31536000"
+    Content-Type = "text/css"
+
+# IMAGE FILES - CACHE LONG TERM
+[[headers]]
+  for = "/images/*"
+  
+  [headers.values]
+    # Cache for 1 year
+    Cache-Control = "public, max-age=31536000"
+
+# FONT FILES - CACHE VERY LONG TERM
+[[headers]]
+  for = "/fonts/*"
+  
+  [headers.values]
+    # Cache for 1 year
+    Cache-Control = "public, max-age=31536000"
+
+# PDF PAPERS - CACHE FOR 7 DAYS
+[[headers]]
+  for = "/papers/*.pdf"
+  
+  [headers.values]
+    # Papers don't change often, cache for 7 days
+    Cache-Control = "public, max-age=604800"
+    Content-Type = "application/pdf"
+
+# SERVICE WORKER - ALWAYS CHECK FOR UPDATES
+[[headers]]
+  for = "/sw.js"
+  
+  [headers.values]
+    # Service worker must be checked every time
+    Cache-Control = "public, max-age=0, must-revalidate"
+    Content-Type = "application/javascript"
+    Service-Worker-Allowed = "/"
+
+# MANIFEST - CHECK HOURLY
+[[headers]]
+  for = "/manifest.json"
+  
+  [headers.values]
+    # PWA manifest - check hourly for updates
+    Cache-Control = "public, max-age=3600"
+    Content-Type = "application/manifest+json"
+
+# ============================================================================
+# NOTES FOR FREE TIER
+# ============================================================================
+
+# FREE TIER LIMITS (as of 2024):
+# ✅ Builds: 300 per month
+# ✅ Bandwidth: 100 GB per month
+# ✅ Form submissions: Included
+# ✅ Basic redirects: Unlimited (what you see above)
+# ✅ Headers: Unlimited (what you see above)
+# ✅ Custom domain: Supported
+# ✅ HTTPS: Automatic with Let's Encrypt
+# ✅ Branch previews: Supported
+# ✅ Rollback: Last deploy only
+
+# ❌ NOT in FREE TIER (don't add these):
+# ❌ Edge Functions (Pro plan)
+# ❌ Netlify CMS (separate service)
+# ❌ Netlify Analytics (Pro plan - use Google Analytics free instead)
+# ❌ Password protection (Pro plan)
+# ❌ Team management (Pro plan)
+# ❌ Netlify Functions (Pro plan) - wait, actually free tier has limited functions!
+
+# ============================================================================
+# OPTIONAL: NETLIFY FORMS (Free tier included!)
+# ============================================================================
+
+# Your HTML form will be auto-detected by Netlify if it has:
+# 1. method="POST"
+# 2. name="form-name" attribute (hidden input with form name)
+# 3. netlify attribute OR data-netlify="true"
+
+# Example form in HTML:
+# <form name="pyq-upload" method="POST" netlify>
+#   <input type="text" name="name" required>
+#   <input type="email" name="email">
+#   <input type="file" name="paper">
+#   <button type="submit">Submit</button>
+# </form>
+
+# After first deployment, form submissions appear in:
+# Netlify Dashboard → Forms → Submissions
+
+# ============================================================================
+# DEPLOYMENT INSTRUCTIONS
+# ============================================================================
+
+# 1. Save this file as "netlify.toml" in your project root
+# 2. Commit and push: git push origin main
+# 3. Netlify auto-detects netlify.toml and uses it
+# 4. Check deploy: https://app.netlify.com/sites/YOUR_SITE/deploys
+# 5. Verify security headers: https://securityheaders.com (paste your domain)
+# 6. Done! ✅
+
+# ============================================================================
+# FILE STRUCTURE EXPECTED
+# ============================================================================
+
+# Your project should look like:
+# project-root/
+# ├── netlify.toml (THIS FILE)
+# ├── package.json (if using npm)
+# ├── index.html (your main app)
+# ├── thank-you.html (form success page)
+# ├── manifest.json (PWA manifest)
+# ├── sw.js (service worker)
+# ├── style.css (your styles)
+# ├── app.js (your app logic)
+# ├── images/ (your images)
+# ├── fonts/ (your fonts)
+# └── papers/ (PDF papers)
+
+# ============================================================================
+# TESTING YOUR CONFIGURATION
+# ============================================================================
+
+# Test redirects:
+# curl -I https://yourdomain.com/tum-to-accha-admi-hee
+# (should redirect to /thank-you.html)
+
+# Test security headers:
+# curl -I https://yourdomain.com
+# (look for: X-Content-Type-Options, X-Frame-Options, etc.)
+
+# Test caching:
+# curl -I https://yourdomain.com/app.js
+# (should show: Cache-Control: public, max-age=31536000)
+
+# ============================================================================
+# COMMON ISSUES & SOLUTIONS
+# ============================================================================
+
+# ISSUE: "Form submissions not appearing"
+# SOLUTION:
+# 1. Check form has: name="form-name" attribute
+# 2. Check form has: method="POST"
+# 3. Check form has: netlify or data-netlify="true"
+# 4. Redeploy after adding netlify attribute
+# 5. Go to: Netlify Dashboard → Forms → (your form name)
+
+# ISSUE: "Security headers not showing"
+# SOLUTION:
+# 1. Check [[headers]] sections are present (they are)
+# 2. Clear browser cache: Ctrl+Shift+Del
+# 3. Try incognito window
+# 4. Check deploy log: no errors?
+# 5. Verify on: https://securityheaders.com
+
+# ISSUE: "404 on /thank-you.html"
+# SOLUTION:
+# 1. Make sure thank-you.html exists in root
+# 2. Check filename spelling (case-sensitive)
+# 3. Test redirect: curl -I https://yourdomain.com/tum-to-accha-admi-hee
+# 4. Check deploy log for errors
+
+# ISSUE: "Client-side routing not working"
+# SOLUTION:
+# 1. Last redirect rule must be: from = "/*" to = "/index.html"
+# 2. Make sure it's AFTER all other rules
+# 3. Don't remove or modify the fallback rule
+# 4. This allows React/Vue/etc to handle routing
+
+# ============================================================================
+# FREE VS PAID COMPARISON
+# ============================================================================
+
+# WHAT YOU GET FREE:
+# ✅ Security headers (this file does it)
+# ✅ Caching strategy (this file does it)
+# ✅ Redirects (unlimited)
+# ✅ Form submissions (up to 100/month)
+# ✅ HTTPS/SSL (automatic)
+# ✅ Branch previews (for testing)
+# ✅ Rollback to previous deploy
+# ✅ Global CDN (faster worldwide)
+# ✅ Custom domain support
+
+# WHAT YOU DON'T GET FREE:
+# ❌ Analytics (use Google Analytics free instead)
+# ❌ Edge Functions (not needed yet)
+# ❌ Password protection (not needed)
+# ❌ Team collaboration (not needed yet)
+# ❌ Advanced monitoring (free tier has basic)
+
+# VERDICT: Free tier is perfect for K-Nexus right now!
+# Upgrade to Pro ($19/month) only when you need:
+# - More than 100 form submissions/month
+# - More than 100 GB bandwidth/month
+# - Edge Functions (backend processing)
+
+# ============================================================================
+# NEXT STEPS
+# ============================================================================
+
+# 1. Copy this entire file
+# 2. Save as "netlify.toml" in your project root
+# 3. Git commit: git add netlify.toml && git commit -m "upgrade netlify to v2.0 free tier"
+# 4. Git push: git push origin main
+# 5. Netlify auto-deploys (takes 30 seconds)
+# 6. Check: https://app.netlify.com/sites/YOUR_SITE/deploys
+# 7. Verify: https://securityheaders.com (paste your domain)
+
+# YOU'RE DONE! Your K-Nexus is now secure and optimized. ✅
+
+# ============================================================================
+# SUPPORT & RESOURCES
+# ============================================================================
+
+# Netlify Docs: https://docs.netlify.com/
+# TOML Syntax: https://toml.io/
+# Security Headers: https://securityheaders.com/
+# Test Your Site: https://www.webpagetest.org/
+# Google Lighthouse: https://developers.google.com/web/tools/lighthouse
+
+# Questions? Check the included guides or visit:
+# https://community.netlify.com/
