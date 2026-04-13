@@ -1,0 +1,52 @@
+04.13 11:56 AM
+manifest.json
+{
+  "name": "K-Nexus - Kolhan University PYQ Hub",
+  "short_name": "K-Nexus",
+  "description": "Access, analyze, and master previous year questions for MJ, MN, MDC, and SEC exams at Kolhan University",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4F46E5",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%234F46E5' width='192' height='192'/><text x='96' y='96' font-size='100' font-weight='bold' fill='white' text-anchor='middle' dominant-baseline='central' font-family='Arial'>K</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect fill='%234F46E5' width='512' height='512'/><text x='256' y='256' font-size='280' font-weight='bold' fill='white' text-anchor='middle' dominant-baseline='central' font-family='Arial'>K</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "productivity"],
+  "screenshots": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 540 720'><rect fill='%23f0f4f8' width='540' height='720'/><text x='270' y='360' font-size='48' font-weight='bold' fill='%234F46E5' text-anchor='middle' dominant-baseline='central'>K-Nexus PYQ Hub</text></svg>",
+      "sizes": "540x720",
+      "type": "image/svg+xml",
+      "form_factor": "narrow"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Search Papers",
+      "short_name": "Search",
+      "description": "Quickly search previous year papers",
+      "url": "/?action=search",
+      "icons": [{ "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><rect fill='%234F46E5' width='96' height='96'/><text x='48' y='48' font-size='50' text-anchor='middle' dominant-baseline='central'></text></svg>", "sizes": "96x96" }]
+    },
+    {
+      "name": "View Dashboard",
+      "short_name": "Dashboard",
+      "description": "Check your learning dashboard",
+      "url": "/?action=dashboard",
+      "icons": [{ "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><rect fill='%234F46E5' width='96' height='96'/><text x='48' y='48' font-size='50' text-anchor='middle' dominant-baseline='central'></text></svg>", "sizes": "96x96" }]
+    }
+  ]
+}
+
