@@ -1,3 +1,5 @@
+
+app.js
 /**
  * K-Nexus v2.0 - Advanced Previous Year Questions Platform
  * 
@@ -11,7 +13,6 @@
  * - Progressive Web App features
  * - Offline support with caching
  */
-
 class KNexusApp {
     constructor() {
         // Data structure
@@ -68,7 +69,6 @@ class KNexusApp {
                 lastStudied: '2024-03-15'
             }
         ];
-
         this.userSession = {
             userId: this.generateUserId(),
             uploads: [],
@@ -83,17 +83,14 @@ class KNexusApp {
                 sortBy: 'recent'
             }
         };
-
         this.stats = {
             totalViews: 0,
             totalDownloads: 0,
             activeUsers: 0,
             newPapers: 0
         };
-
         this.init();
     }
-
     /**
      * Initialize the application
      */
@@ -106,7 +103,6 @@ class KNexusApp {
         this.renderAnalytics();
         this.startOfflineDetection();
     }
-
     /**
      * Setup all event listeners
      */
@@ -119,13 +115,11 @@ class KNexusApp {
                     this.handleSearch(e.target.value);
                 });
             }
-
             // Dark mode
             const darkToggle = document.getElementById('darkToggle');
             if (darkToggle) {
                 darkToggle.addEventListener('click', () => this.toggleDarkMode());
             }
-
             // Filters
             const difficultyFilter = document.getElementById('difficultyFilter');
             if (difficultyFilter) {
@@ -134,7 +128,6 @@ class KNexusApp {
                     this.renderPapers();
                 });
             }
-
             const examTypeFilter = document.getElementById('examTypeFilter');
             if (examTypeFilter) {
                 examTypeFilter.addEventListener('change', (e) => {
@@ -142,7 +135,6 @@ class KNexusApp {
                     this.renderPapers();
                 });
             }
-
             const yearFilter = document.getElementById('yearFilter');
             if (yearFilter) {
                 yearFilter.addEventListener('change', (e) => {
@@ -150,7 +142,6 @@ class KNexusApp {
                     this.renderPapers();
                 });
             }
-
             const sortSelect = document.getElementById('sortSelect');
             if (sortSelect) {
                 sortSelect.addEventListener('change', (e) => {
@@ -158,7 +149,6 @@ class KNexusApp {
                     this.renderPapers();
                 });
             }
-
             // Tab navigation
             document.querySelectorAll('[data-tab]').forEach(btn => {
                 btn.addEventListener('click', (e) => {
@@ -168,7 +158,6 @@ class KNexusApp {
             });
         });
     }
-
     /**
      * Handle search functionality with advanced filtering
      */
@@ -179,29 +168,22 @@ class KNexusApp {
                 p.dept.toLowerCase().includes(term.toLowerCase()) ||
                 p.examType.toLowerCase().includes(term.toLowerCase()) ||
                 p.year.toString().includes(term);
-
             const matchesDifficulty = this.userSession.preferences.difficulty === 'all' || 
                 p.difficulty === this.userSession.preferences.difficulty;
-
             const matchesExamType = this.userSession.preferences.examType === 'all' || 
                 p.examType === this.userSession.preferences.examType;
-
             const matchesYear = this.userSession.preferences.year === 'all' || 
                 p.year.toString() === this.userSession.preferences.year;
-
             return matchesSearch && matchesDifficulty && matchesExamType && matchesYear;
         });
-
         this.renderPapersFiltered(filtered);
     }
-
     /**
      * Render papers with filters applied
      */
     renderPapers() {
         const preferences = this.userSession.preferences;
         let filtered = this.papers;
-
         if (preferences.difficulty !== 'all') {
             filtered = filtered.filter(p => p.difficulty === preferences.difficulty);
         }
@@ -211,7 +193,6 @@ class KNexusApp {
         if (preferences.year !== 'all') {
             filtered = filtered.filter(p => p.year.toString() === preferences.year);
         }
-
         // Sort
         if (preferences.sortBy === 'recent') {
             filtered.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate));
@@ -223,19 +204,15 @@ class KNexusApp {
             const diffOrder = { easy: 1, medium: 2, hard: 3 };
             filtered.sort((a, b) => diffOrder[a.difficulty] - diffOrder[b.difficulty]);
         }
-
         this.renderPapersFiltered(filtered);
     }
-
     /**
      * Render filtered papers to grid
      */
     renderPapersFiltered(filtered) {
         const grid = document.getElementById('gridContainer');
         if (!grid) return;
-
         grid.innerHTML = '';
-
         if (filtered.length === 0) {
             grid.innerHTML = `
                 <div class="col-span-full text-center py-20">
@@ -244,15 +221,12 @@ class KNexusApp {
             `;
             return;
         }
-
         filtered.forEach(paper => {
             const card = this.createPaperCard(paper);
             grid.appendChild(card);
         });
-
         this.updateStats();
     }
-
     /**
      * Create individual paper card
      */
@@ -260,20 +234,17 @@ class KNexusApp {
         const card = document.createElement('div');
         card.className = 'glass p-6 rounded-2xl hover:shadow-xl transition-all duration-300 cursor-pointer group border border-slate-200 dark:border-slate-700';
         card.dataset.paperId = paper.id;
-
         const difficultyColor = {
             easy: 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-200',
             medium: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-200',
             hard: 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-200'
         };
-
         const examTypeColor = {
             MJ: 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200',
             MN: 'bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-200',
             MDC: 'bg-pink-100 text-pink-700 dark:bg-pink-900 dark:text-pink-200',
             SEC: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-200'
         };
-
         card.innerHTML = `
             <div class="flex justify-between items-start mb-3">
                 <div>
@@ -282,26 +253,21 @@ class KNexusApp {
                 </div>
                 <button class="opacity-0 group-hover:opacity-100 transition-opacity favorite-btn" data-id="${paper.id}" title="Add to favorites">❤️</button>
             </div>
-            
             <h3 class="text-lg font-bold mb-2 text-slate-900 dark:text-white">${paper.name}</h3>
-            
             <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">${paper.dept}</p>
-            
             <div class="flex gap-2 mb-4 flex-wrap">
-                <span class="text-xs bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded">📅 ${paper.year}</span>
-                <span class="text-xs bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded">📝 Sem ${paper.semester}</span>
-                <span class="text-xs bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded">📄 ${paper.papers}</span>
+                <span class="text-xs bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded"> ${paper.year}</span>
+                <span class="text-xs bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded"> Sem ${paper.semester}</span>
+                <span class="text-xs bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded"> ${paper.papers}</span>
             </div>
-
             <div class="flex items-center justify-between mb-4 text-sm">
                 <div class="flex items-center gap-1">
                     <span class="text-yellow-400">⭐</span>
                     <span class="font-semibold">${paper.rating}</span>
                     <span class="text-slate-500 dark:text-slate-400">(${paper.reviews})</span>
                 </div>
-                <span class="text-slate-600 dark:text-slate-400">📥 ${paper.downloads}</span>
+                <span class="text-slate-600 dark:text-slate-400"> ${paper.downloads}</span>
             </div>
-
             <div class="border-t border-slate-200 dark:border-slate-700 pt-4">
                 <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">By ${paper.uploadedBy} • ${this.formatDate(paper.uploadDate)}</p>
                 <div class="flex gap-2">
@@ -314,32 +280,26 @@ class KNexusApp {
                 </div>
             </div>
         `;
-
         // Event listeners
         card.querySelector('.favorite-btn').addEventListener('click', (e) => {
             e.stopPropagation();
             this.toggleFavorite(paper.id);
         });
-
         card.querySelector('.preview-btn').addEventListener('click', (e) => {
             e.stopPropagation();
             this.showPreview(paper);
         });
-
         return card;
     }
-
     /**
      * Render user dashboard
      */
     renderDashboard() {
         const dashboard = document.getElementById('userDashboard');
         if (!dashboard) return;
-
         const recentDownloads = this.userSession.downloads.slice(0, 5);
         const favoriteCount = this.userSession.favorites.length;
         const totalStudyTime = this.calculateStudyTime();
-
         dashboard.innerHTML = `
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 <div class="glass p-6 rounded-2xl border border-slate-200 dark:border-slate-700">
@@ -355,7 +315,6 @@ class KNexusApp {
                     <p class="text-3xl font-bold text-green-600">${totalStudyTime}h</p>
                 </div>
             </div>
-
             <div class="glass p-6 rounded-2xl border border-slate-200 dark:border-slate-700">
                 <h3 class="text-xl font-bold mb-4">Recent Downloads</h3>
                 ${recentDownloads.length > 0 ? `
@@ -371,16 +330,13 @@ class KNexusApp {
             </div>
         `;
     }
-
     /**
      * Render analytics section
      */
     renderAnalytics() {
         const analyticsDiv = document.getElementById('analyticsPanel');
         if (!analyticsDiv) return;
-
         const stats = this.getAnalytics();
-
         analyticsDiv.innerHTML = `
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div class="glass p-6 rounded-2xl border border-slate-200 dark:border-slate-700 text-center">
@@ -402,7 +358,6 @@ class KNexusApp {
             </div>
         `;
     }
-
     /**
      * Get analytics data
      */
@@ -411,7 +366,6 @@ class KNexusApp {
         const avgRating = this.papers.reduce((sum, p) => sum + p.rating, 0) / this.papers.length;
         const departments = new Set(this.papers.map(p => p.dept)).size;
         const totalPapers = this.papers.reduce((sum, p) => sum + p.papers, 0);
-
         return {
             totalPapers,
             totalDownloads,
@@ -419,7 +373,6 @@ class KNexusApp {
             departments
         };
     }
-
     /**
      * Toggle favorite
      */
@@ -432,7 +385,6 @@ class KNexusApp {
         }
         this.saveToLocalStorage();
     }
-
     /**
      * Show paper preview
      */
@@ -457,7 +409,6 @@ class KNexusApp {
             document.body.appendChild(modal);
         }
     }
-
     /**
      * Switch tabs
      */
@@ -466,7 +417,6 @@ class KNexusApp {
             el.classList.add('hidden');
         });
         document.getElementById(`${tab}-content`)?.classList.remove('hidden');
-
         document.querySelectorAll('[data-tab]').forEach(btn => {
             btn.classList.remove('bg-indigo-600', 'text-white');
             btn.classList.add('bg-slate-100', 'text-slate-900', 'dark:bg-slate-700', 'dark:text-white');
@@ -474,7 +424,6 @@ class KNexusApp {
         event.target.classList.remove('bg-slate-100', 'text-slate-900', 'dark:bg-slate-700');
         event.target.classList.add('bg-indigo-600', 'text-white');
     }
-
     /**
      * Toggle dark mode
      */
@@ -483,14 +432,12 @@ class KNexusApp {
         html.classList.toggle('dark');
         localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
     }
-
     /**
      * Calculate total study time
      */
     calculateStudyTime() {
         return this.userSession.studySessions.reduce((sum, session) => sum + session.duration, 0);
     }
-
     /**
      * Format date
      */
@@ -499,103 +446,54 @@ class KNexusApp {
         const now = new Date();
         const diffMs = now - date;
         const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-
         if (diffDays === 0) return 'Today';
         if (diffDays === 1) return 'Yesterday';
         if (diffDays < 7) return `${diffDays} days ago`;
         if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
         return date.toLocaleDateString();
     }
-
     /**
      * Save to localStorage
      */
     saveToLocalStorage() {
         localStorage.setItem('knexus-user-session', JSON.stringify(this.userSession));
     }
+        /**
+         *      * Load user session from localStorage
+              */
+                  loadFromLocalStorage() {
+                          const saved = localStorage.getItem('knexus-user-session');
+                                  if (saved) {
+                                              this.userSession = JSON.parse(saved);
+                                                      }
+                                                          }
 
-    /**
-     * Load from localStorage
-     */
-    loadFromLocalStorage() {
-        const saved = localStorage.getItem('knexus-user-session');
-        if (saved) {
-            this.userSession = JSON.parse(saved);
-        }
+                                                              /**
+                                                                   * Generate a unique user ID
+                                                                        */
+                                                                            generateUserId() {
+                                                                                    return 'user-' + Math.random().toString(36).substr(2, 9);
+                                                                                        }
 
-        // Load theme preference
-        const theme = localStorage.getItem('theme');
-        if (theme === 'dark') {
-            document.documentElement.classList.add('dark');
-        }
+                                                                                            /**
+                                                                                                 * Placeholder methods to prevent initialization errors
+                                                                                                      */
+                                                                                                          setupServiceWorker() {
+                                                                                                                  console.log("Service Worker initialization logic goes here.");
+                                                                                                                      }
+
+                                                                                                                          startOfflineDetection() {
+                                                                                                                                  window.addEventListener('online', () => console.log('Back online!'));
+                                                                                                                                          window.addEventListener('offline', () => console.log('Connection lost.'));
+                                                                                                                                              }
+
+                                                                                                                                                  updateStats() {
+                                                                                                                                                          // Optional logic to update UI counters
+                                                                                                                                                              }
+                                                                                                                                                              } // <--- This final curly brace closes the entire class
+
+window.addEventListener('DOMContentLoaded', () => {
+    if (typeof KNexusApp !== 'undefined') {
+        new KNexusApp();
     }
-
-    /**
-     * Setup service worker for offline support
-     */
-    setupServiceWorker() {
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js').catch(err => {
-                console.log('Service Worker registration failed:', err);
-            });
-        }
-    }
-
-    /**
-     * Detect offline/online status
-     */
-    startOfflineDetection() {
-        window.addEventListener('online', () => {
-            this.showNotification('Back online! Syncing data...', 'success');
-        });
-
-        window.addEventListener('offline', () => {
-            this.showNotification('No internet connection. Using cached data.', 'warning');
-        });
-    }
-
-    /**
-     * Show notification
-     */
-    showNotification(message, type = 'info') {
-        const notification = document.createElement('div');
-        notification.className = `fixed bottom-4 right-4 px-6 py-3 rounded-lg text-white font-semibold z-50 ${
-            type === 'success' ? 'bg-green-500' : type === 'warning' ? 'bg-yellow-500' : 'bg-blue-500'
-        }`;
-        notification.textContent = message;
-        document.body.appendChild(notification);
-
-        setTimeout(() => {
-            notification.remove();
-        }, 3000);
-    }
-
-    /**
-     * Update stats
-     */
-    updateStats() {
-        this.stats.totalDownloads = this.papers.reduce((sum, p) => sum + p.downloads, 0);
-        this.stats.newPapers = this.papers.filter(p => {
-            const daysSince = Math.floor((new Date() - new Date(p.uploadDate)) / (1000 * 60 * 60 * 24));
-            return daysSince < 30;
-        }).length;
-    }
-
-    /**
-     * Generate unique user ID
-     */
-    generateUserId() {
-        const stored = localStorage.getItem('knexus-user-id');
-        if (stored) return stored;
-        const id = 'user_' + Math.random().toString(36).substr(2, 9);
-        localStorage.setItem('knexus-user-id', id);
-        return id;
-    }
-}
-
-// Initialize app globally
-window.knexusApp = new KNexusApp();
-</script> <script src="script.v20(1).js"></script>
-
-</body>
-</html>
+});

@@ -1,4 +1,4 @@
-04.13 11:57 AM
+
 sw.js
 // K-Nexus Service Worker
 // This file makes your app work offline and installable as an app
