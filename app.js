@@ -67,7 +67,25 @@ class KNexusApp {
                 rating: 4.8,
                 reviews: 15,
                 lastStudied: '2024-03-15'
+            },
+            { 
+                id: 4,
+                name: 'Political Science', 
+                dept: 'Arts', 
+                papers: 40, 
+                year: 2024, 
+                semester: 1, 
+                examType: 'MJ',
+                difficulty: 'medium',
+                link: '/papers/political-science-2024-sem1.pdf',
+                uploadedBy: 'Admin',
+                uploadDate: '2024-01-20',
+                downloads: 210,
+                rating: 4.3,
+                reviews: 9,
+                lastStudied: '2024-03-12'
             }
+
         ];
         this.userSession = {
             userId: this.generateUserId(),
